@@ -57,8 +57,13 @@ QuedTree.prototype = {
         ''
         for(let i = 0; i < ARRAY_SIZE; i++){
             this.quedArray[i] = new QuedTree(itemCoodinater[i]);
+
+            for(let item of tempDataArray){
+                if ((item.centerX < this.quedArray[i].maxX && item.centerX > this.quedArray[i].minX)
+                && (item.centerY < node.maxY && this.quedArray[i].centerY > this.quedArray[i].minY))
+                    //TODO : 삽입 삭제
+            }
         }
-        
 
 
     }
