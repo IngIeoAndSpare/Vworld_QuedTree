@@ -2,7 +2,13 @@ window.addEventListener('load', init);
 const SIZE = 0.25;
 var INSERT_NUMBER;
 
-var tree = rbush(4);
+//TODO : 좌표 적당히 지정  (maxX, maxY, minX, minY)
+/*
+ 시작 좌표 37.2907675,125.4591496  [13966048.648829132, 4479713.895347519]
+ 끝 좌표   34.7324634,130.0639961 [14478657.81639032, 4127583.163641331]
+ [[x, y], [x + SIZE, y], [x + SIZE, y + SIZE], [x, y + SIZE]];
+*/
+var tree = new QuedTree(new item(14478657.81639032, 4127583.163641331, 13966048.648829132, 4479713.895347519));
 
 var v_map;
 var vectorSourceForData;
@@ -37,18 +43,13 @@ function init() {
     //--------test
     v_map.addEventListener('click', function (e) {
         let coorder = e.coordinate;
-        search(coorder);
+        console.log(coorder);
     });
 
 }
 
-function workerHendler() {
-    checkWorker = document.getElementById('checkWorker').checked;
-    useWorker = window.Worker ? true : false;
-}
 
 function testHendler() {
-    workerHendler();
     INSERT_NUMBER = (!document.getElementById('insertNumber').value ? 10 : Number(document.getElementById('insertNumber').value));
     console.time('inset ' + INSERT_NUMBER + 'data  ');
     startDraw();

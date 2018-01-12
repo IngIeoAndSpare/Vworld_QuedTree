@@ -9,15 +9,14 @@ function item(maxX, maxY, minX, minY) {
 
 function QuedTree(item) {
     this.item = null;
-    this.quedArray = new Array(ARRAY_SIZE);
-    quedArray.push(item);
+    this.quedArray = new Array();
 }
 
 QuedTree.prototype = {
 
     insert: function (item) {
         if (this.quedArray.length == ARRAY_SIZE) {
-            let itemCenter = item.prototype.getCenter(item);
+            let itemCenter = item.getCenter(item);
             for (let node of this.quedArray) {
                 if ((itemCenter.centerX < node.maxX && itemCenter.centerX > node.minX)
                     && (itemCenter.centerY < node.maxY && itemCenter.centerY > node.minY))
@@ -26,7 +25,7 @@ QuedTree.prototype = {
             }
         }
         else
-            this.quedArray.push(new QuedTree(item));
+            this.quedArray.push(item);
 
     },
     search: function (item, center) {
@@ -57,11 +56,15 @@ QuedTree.prototype = {
         ''
         for(let i = 0; i < ARRAY_SIZE; i++){
             this.quedArray[i] = new QuedTree(itemCoodinater[i]);
-
+            let offset = 0;
             for(let item of tempDataArray){
                 if ((item.centerX < this.quedArray[i].maxX && item.centerX > this.quedArray[i].minX)
-                && (item.centerY < node.maxY && this.quedArray[i].centerY > this.quedArray[i].minY))
-                    //TODO : 삽입 삭제
+                && (item.centerY < node.maxY && this.quedArray[i].centerY > this.quedArray[i].minY)){
+                    this.quedArray[i].push(item);
+                    tempDataArray.splice(offset,1);
+                    break;
+                }
+                offset++;
             }
         }
 
@@ -74,8 +77,8 @@ item.prototype = {
     
     getCenter: function (item) {
         return {
-            centerX: this.maxX - this.minX,
-            centerY: this.maxY - this.minY
+            centerX: (this.maxX + this.minX) / 2,
+            centerY: (this.maxY + this.minY) / 2
         }
     }
 }

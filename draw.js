@@ -9,16 +9,10 @@ function convertPoint(coorSet) {
     return tempArray;
 }
 
-
+//maxX, maxY, minX, minY
 function pushDataOnRbus(coor) {
-    let item = {
-        minX: coor[0][0],
-        minY: coor[0][1],
-        maxX: coor[2][0],
-        maxY: coor[2][1]
-    }
 
-    tree.insert(item);
+    tree.insert(new item(coor[2][0], coor[2][1], coor[0][0], coor[0][1]));
     vectorSourceForRbush = new ol.source.Vector({ projection: 'EPSG:4326', wrapX: false });
     vectorLayerForRbush = new ol.layer.Vector({ source: vectorSourceForRbush });
     //treeVisual(tree.data);
