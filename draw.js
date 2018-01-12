@@ -12,7 +12,7 @@ function convertPoint(coorSet) {
 //maxX, maxY, minX, minY
 function pushDataOnRbus(coor) {
 
-    tree.insert(new item(coor[2][0], coor[2][1], coor[0][0], coor[0][1]));
+    tree.insert(new item(coor[0][0], coor[0][1], coor[2][0], coor[2][1]));
     vectorSourceForRbush = new ol.source.Vector({ projection: 'EPSG:4326', wrapX: false });
     vectorLayerForRbush = new ol.layer.Vector({ source: vectorSourceForRbush });
     //treeVisual(tree.data);
@@ -68,5 +68,5 @@ function randClusterPoint() {
     var x = Number(getRandomArbitrary(39.6295437, 32.9409019)),
         y = Number(getRandomArbitrary(124.4191746, 132.2879115));
 
-    return [[x, y], [x + SIZE, y], [x + SIZE, y + SIZE], [x, y + SIZE]];
+    return [[x, y], [x + SIZE, y], [x + SIZE, y +SIZE], [x , y + SIZE]];
 }

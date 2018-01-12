@@ -2,7 +2,7 @@ window.addEventListener('load', init);
 const SIZE = 0.25;
 var INSERT_NUMBER;
 
-//TODO : 좌표 적당히 지정  (maxX, maxY, minX, minY)
+//TODO : 좌표 적당히 지정  (backX, backY, frontX, frontY)
 /*
  시작 좌표 37.2907675,125.4591496  [13966048.648829132, 4479713.895347519]
  끝 좌표   34.7324634,130.0639961 [14478657.81639032, 4127583.163641331]

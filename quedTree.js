@@ -1,47 +1,45 @@
 const ARRAY_SIZE = 4;
 
-function item(maxX, maxY, minX, minY) {
-    this.maxX = maxX;                   //minPoint -----
-    this.maxY = maxY;                   //   |             |
-    this.minX = minX;                   //   |             |
-    this.minY = minY;                   //   |     ----- maxPoint
+function item(minX, minY, maxX, maxY) {
+    this.minY = minY;                             //     + ----------- max
+    this.minX = minX;                             //     |             |
+    this.maxX = maxX;                             //     |             |
+    this.maxY = maxY;                             //   min ------------+
 }
 
 function QuedTree(item) {
     this.item = item;
     this.leaf = true;
-    this.quedArray = new Array();
+    this.child = [];
 }
 
 QuedTree.prototype = {
 
     insert: function (item) {
-        if (this.quedArray.length == ARRAY_SIZE) {
-            if (this.leaf) {
-                this.share();
-            }
+        if (this.child.length == ARRAY_SIZE && !(this.leaf)) {
             let itemCenter = item.getCenter();
-            for (let node of this.quedArray) {
-                if ((itemCenter.centerX < node.maxX && itemCenter.centerX > node.minX)
-                    && (itemCenter.centerY < node.maxY && itemCenter.centerY > node.minY))
-                    return node.insert(item);
-                ''
-            }
+            let offset = this.devide(itemCenter, this.item.getCenter());
+            return this.child[offset].insert(item);
         }
-        else
-            this.quedArray.push(item);
+        else {
+            this.child.push(item);
+            if (this.child.length == 4)
+                this.share();
+            ''
+        }
+
 
     },
     search: function (item, center) {
         let offset = 0;
 
-        for (let node of this.quedArray) {
+        for (let node of this.child) {
             if (item.maxX == node.maxX && item.minX == node.minX
-                && item.maxY == node.maxY && item.minY == node.minY)
+                && item.minY == node.minY && item.maxY == node.maxY)
                 return console.timeEnd('search time : ');
 
             else if ((center.centerX < node.item.maxX && center.centerX > node.item.minX)
-                && (center.centerY < node.item.maxY && center.centerY > node.item.minY) && !(this.leaf))
+                && (center.centerY > node.item.minY && center.centerY < node.item.maxY) && !(this.leaf))
                 return node.search(item, center);
 
             else
@@ -49,31 +47,47 @@ QuedTree.prototype = {
             ''
         }
     },
+
     share: function () {
         this.leaf = false;
 
         let nodeCenter = this.item.getCenter();
-        let tempDataArray = this.quedArray.slice();
+        let tempDataArray = this.child.slice();
+        let itemCoodinater = [
+            new item(nodeCenter.centerX, nodeCenter.centerY, this.item.maxX, this.item.maxY), //1사분면
+            new item(this.item.minX, nodeCenter.centerY, nodeCenter.centerX, this.item.maxY), //2사분면
+            new item(this.item.minX, this.item.minY, nodeCenter.centerX, nodeCenter.centerY), //3사분면
+            new item(nodeCenter.centerX, this.item.minY, this.item.maxX, nodeCenter.centerY)  //4사분면
+        ]
 
-        let itemCoodinater = [new item(nodeCenter.centerX, nodeCenter.centerY, this.item.minX, this.item.minY), //2사분면
-                              new item(this.item.maxX, nodeCenter.centerY, nodeCenter.centerX, this.item.minY), //1사분면
-                              new item(nodeCenter.centerX, this.item.maxY, this.item.minX, nodeCenter.centerY), //3사분면
-                              new item(this.item.maxX, this.item.maxY, nodeCenter.centerX, nodeCenter.centerY)] //4사분면
+        for (let i = 0; i < 4; i++)
+            this.child[i] = new QuedTree(itemCoodinater[i]);
         ''
-        for (let i = 0; i < ARRAY_SIZE; i++) {
-            this.quedArray[i] = new QuedTree(itemCoodinater[i]);
-            let offset = 0;
-            for (let item of tempDataArray) {
-                if ((item.centerX < this.quedArray[i].item.maxX && item.centerX > this.quedArray[i].item.minX)
-                    && (item.centerY < this.quedArray[i].item.maxY && item.centerY > this.quedArray[i].item.minY)) {
-                    this.quedArray[i].quedArray.push(item);
-                    tempDataArray.splice(offset, 1);
-                    break;
-                }
-                offset++;
-            }
+        for (let item of tempDataArray) {
+            let itemCenter = item.getCenter();
+            let offset = this.devide(itemCenter, nodeCenter);
+
+            this.child[offset].insert(item);
         }
+
     },
+    devide: function (itemCenter, nodeCenter) {
+
+        let offset;
+        if (itemCenter.centerX < nodeCenter.centerX) {
+            if (itemCenter.centerY < nodeCenter.centerY) //3
+                offset = 2;
+            else //2
+                offset = 1;
+        }
+        else {
+            if (itemCenter.centerY < nodeCenter.centerY) //4
+                offset = 3;
+            else //1
+                offset = 0;
+        }
+        return offset;
+    }
 
 }
 
@@ -81,8 +95,8 @@ item.prototype = {
 
     getCenter: function () {
         return {
-            centerX: Number(((this.maxX + this.minX) / 2).toFixed(9)),
-            centerY: Number(((this.maxY + this.minY) / 2).toFixed(9))
+            centerX: Number(((this.minX + this.maxX) / 2).toFixed(9)),
+            centerY: Number(((this.minY + this.maxY) / 2).toFixed(9))
         }
     }
 }
