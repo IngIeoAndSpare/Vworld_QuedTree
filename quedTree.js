@@ -19,7 +19,7 @@ QuedTree.prototype = {
         if (this.child.length == ARRAY_SIZE && !(this.leaf)) {
             let itemCenter = item.getCenter();
             let offset = this.devide(itemCenter, this.item.getCenter());
-            return this.child[offset].insert(item);
+            this.child[offset].insert(item);
         }
         else {
             this.child.push(item);
@@ -66,7 +66,6 @@ QuedTree.prototype = {
         for (let item of tempDataArray) {
             let itemCenter = item.getCenter();
             let offset = this.devide(itemCenter, nodeCenter);
-
             this.child[offset].insert(item);
         }
 
