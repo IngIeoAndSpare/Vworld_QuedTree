@@ -23,7 +23,7 @@ QuedTree.prototype = {
         }
         else {
             this.child.push(item);
-            if (this.child.length == 4)
+            if (this.child.length == 4 && (this.leaf))
                 this.share();
             ''
         }
@@ -66,7 +66,7 @@ QuedTree.prototype = {
         for (let item of tempDataArray) {
             let itemCenter = item.getCenter();
             let offset = this.devide(itemCenter, nodeCenter);
-            this.child[offset].insert(item);
+            this.child[offset].child.push(item);
         }
 
     },
