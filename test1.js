@@ -8,7 +8,7 @@ var INSERT_NUMBER;
  끝 좌표   34.7324634,130.0639961 [14478657.81639032, 4127583.163641331]
  [[x, y], [x + SIZE, y], [x + SIZE, y + SIZE], [x, y + SIZE]];
 */
-var tree = new QuedTree(new item(14478657.81639032, 4127583.163641331, 13966048.648829132, 4479713.895347519));
+var tree = new QuedTree(new item(13966048.648829132, 4127583.163641331, 14478657.81639032, 4479713.895347519));
 
 var v_map;
 var vectorSourceForData;
