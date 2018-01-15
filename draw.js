@@ -13,8 +13,8 @@ function convertPoint(coorSet) {
 function pushDataOnRbus(coor) {
 
     tree.insert(new item(coor[0][0], coor[0][1], coor[2][0], coor[2][1]));
-    vectorSourceForRbush = new ol.source.Vector({ projection: 'EPSG:4326', wrapX: false });
-    vectorLayerForRbush = new ol.layer.Vector({ source: vectorSourceForRbush });
+    //vectorSourceForRbush = new ol.source.Vector({ projection: 'EPSG:4326', wrapX: false });
+    //vectorLayerForRbush = new ol.layer.Vector({ source: vectorSourceForRbush });
     //treeVisual(tree.data);
 
 }
